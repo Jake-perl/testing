@@ -1,10 +1,11 @@
+import pygame
+
 print("Hello Clarence")
-make box= if in capital 
+
 name = clarence
 if name = clarence
   print("Welcome Clarence")
+elif name = Jake
+  print("Hello Jake")
 else
   print("Hello.")
-background=blue
-
-
