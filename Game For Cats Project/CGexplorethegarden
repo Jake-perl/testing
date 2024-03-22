@@ -1,0 +1,79 @@
+import pygame
+import sys
+import random
+
+# Initialize pygame
+pygame.init()
+
+# Constants
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+CAT_SIZE = 50
+OBJECT_SIZE = 30
+CAT_SPEED = 5
+BG_COLOR = (0, 128, 0)  # Green
+CAT_COLOR = (255, 255, 0)  # Yellow
+OBJECT_COLORS = [(255, 0, 0), (0, 255, 0), (0, 0, 255)]  # Red, Green, Blue
+NUM_OBJECTS = 10
+
+# Function to create a new random position for objects
+def get_random_position():
+    x = random.randint(0, SCREEN_WIDTH - OBJECT_SIZE)
+    y = random.randint(0, SCREEN_HEIGHT - OBJECT_SIZE)
+    return x, y
+
+# Set up the screen
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Explore the Garden")
+
+# Set up the clock
+clock = pygame.time.Clock()
+
+# Initialize cat position
+cat_x = SCREEN_WIDTH // 2
+cat_y = SCREEN_HEIGHT // 2
+
+# Initialize objects
+objects = [get_random_position() for _ in range(NUM_OBJECTS)]
+
+# Main game loop
+running = True
+while running:
+    screen.fill(BG_COLOR)
+
+    # Handle events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Move the cat based on arrow key input
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]:
+        cat_x -= CAT_SPEED
+    if keys[pygame.K_RIGHT]:
+        cat_x += CAT_SPEED
+    if keys[pygame.K_UP]:
+        cat_y -= CAT_SPEED
+    if keys[pygame.K_DOWN]:
+        cat_y += CAT_SPEED
+
+    # Ensure the cat stays within the screen boundaries
+    cat_x = max(0, min(cat_x, SCREEN_WIDTH - CAT_SIZE))
+    cat_y = max(0, min(cat_y, SCREEN_HEIGHT - CAT_SIZE))
+
+    # Draw the cat
+    pygame.draw.rect(screen, CAT_COLOR, (cat_x, cat_y, CAT_SIZE, CAT_SIZE))
+
+    # Draw objects
+    for obj_pos, obj_color in zip(objects, OBJECT_COLORS):
+        pygame.draw.rect(screen, obj_color, (obj_pos[0], obj_pos[1], OBJECT_SIZE, OBJECT_SIZE))
+
+    # Update the display
+    pygame.display.flip()
+
+    # Cap the frame rate
+    clock.tick(60)
+
+# Quit pygame
+pygame.quit()
+sys.exit()
